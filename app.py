@@ -10,16 +10,16 @@ from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
 
 app=Flask(__name__)
-app.secret_key="secret123"
+app.secret_key = os.getenv("SECRET_KEY")
 
-EMAIL_ADDRESS="monishakumar1507@gmail.com"
-EMAIL_PASSWORD="gyjwupxulxpzdllc"
+EMAIL_ADDRESS = os.getenv("EMAIL_ADDRESS")
+EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
 
-DB_HOST="ep-blue-king-aihiazrl-pooler.c-4.us-east-1.aws.neon.tech"
-DB_NAME="neondb"
-DB_USER="neondb_owner"
-DB_PASSWORD="npg_Mv8s1oDPYhAn"
-DB_PORT="5432"
+DB_HOST = os.getenv("DB_HOST")
+DB_NAME = os.getenv("DB_NAME")
+DB_USER = os.getenv("DB_USER")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
+DB_PORT = os.getenv("DB_PORT")
 
 def get_connection():
     return psycopg2.connect(
