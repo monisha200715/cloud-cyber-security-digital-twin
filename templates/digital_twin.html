@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cloud Cyber Security Digital Twin</title>
+
+    <meta http-equiv="refresh" content="5">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#F8FAFC;
+    padding:30px;
+}
+
+h1{
+    text-align:center;
+    color:#334155;
+    margin-bottom:30px;
+}
+
+.container{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+}
+
+.card{
+    background:white;
+    border-radius:15px;
+    padding:25px;
+    text-align:center;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-6px);
+}
+
+.card h2{
+    font-size:34px;
+    margin-bottom:10px;
+    color:#334155;
+}
+
+.card p{
+    font-size:18px;
+    color:#475569;
+}
+
+.blue{background:#DBEAFE;}
+.green{background:#DCFCE7;}
+.red{background:#FEE2E2;}
+.orange{background:#FEF3C7;}
+
+.status{
+
+    background:white;
+    margin-top:30px;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+}
+
+.status h2{
+    color:#334155;
+    margin-bottom:15px;
+}
+
+.info p{
+    margin:8px 0;
+    color:#475569;
+    font-size:17px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+}
+
+th{
+
+    background:#BFDBFE;
+    color:#1E3A8A;
+    padding:12px;
+}
+
+td{
+
+    padding:12px;
+    border-bottom:1px solid #E5E7EB;
+    text-align:center;
+}
+
+tr:nth-child(even){
+    background:#F8FAFC;
+}
+
+.success{
+    color:green;
+    font-weight:bold;
+}
+
+.failed{
+    color:red;
+    font-weight:bold;
+}
+
+.low{
+
+    color:#16A34A;
+    font-size:22px;
+    font-weight:bold;
+}
+
+.medium{
+
+    color:#F59E0B;
+    font-size:22px;
+    font-weight:bold;
+}
+
+.high{
+
+    color:#DC2626;
+    font-size:22px;
+    font-weight:bold;
+}
+
+.footer{
+
+    margin-top:35px;
+    text-align:center;
+}
+
+.footer a{
+
+    background:#BFDBFE;
+    color:#1E3A8A;
+    text-decoration:none;
+    padding:12px 25px;
+    border-radius:10px;
+    font-weight:bold;
+}
+
+.footer a:hover{
+
+    background:#93C5FD;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>🔐 Cloud Cyber Security Digital Twin Dashboard</h1>
+
+<div class="container">
+
+<div class="card blue">
+<h2>{{ total_logs }}</h2>
+<p>Total Logs</p>
+</div>
+
+<div class="card green">
+<h2>{{ success_logs }}</h2>
+<p>Successful Logins</p>
+</div>
+
+<div class="card red">
+<h2>{{ failed_logs }}</h2>
+<p>Failed Logins</p>
+</div>
+
+<div class="card orange">
+<h2>{{ sql_attacks }}</h2>
+<p>SQL Injection Attempts</p>
+</div>
+
+</div>
+
+<div class="status">
+
+<h2>🛡 Threat Level</h2>
+
+{% if failed_logs < 3 %}
+<p class="low">🟢 LOW</p>
+
+{% elif failed_logs < 6 %}
+<p class="medium">🟡 MEDIUM</p>
+
+{% else %}
+<p class="high">🔴 HIGH</p>
+
+{% endif %}
+
+</div>
+
+<div class="status">
+
+<h2>☁ Cloud System Status</h2>
+
+<div class="info">
+
+<p>🟢 System Status : ONLINE</p>
+
+<p>☁ Database : CONNECTED</p>
+
+<p>🔄 Auto Refresh : Every 5 Seconds</p>
+
+</div>
+
+</div>
+<div class="status">
+
+<h2>🚨 Live Threat Level</h2>
+
+<div style="
+background: {{ threat_color }};
+color:white
+
+<div class="status">
+
+<h2>🛰 Latest Login Information</h2>
+
+{% if latest_login %}
+
+<div class="info">
+
+<p><b>👤 Username :</b> {{ latest_login[0] }}</p>
+
+<p><b>🌍 IP :</b> {{ latest_login[1] }}</p>
+
+<p><b>💻 Browser :</b> {{ latest_login[2] }}</p>
+
+<p><b>🖥 OS :</b> {{ latest_login[3] }}</p>
+
+<p><b>📱 Device :</b> {{ latest_login[4] }}</p>
+
+<p><b>🌎 Country :</b> {{ latest_login[5] }}</p>
+
+<p><b>🏙 City :</b> {{ latest_login[6] }}</p>
+
+<p><b>🕒 Time :</b> {{ latest_login[7] }}</p>
+
+</div>
+
+{% else %}
+
+<p>No Login Found</p>
+
+{% endif %}
+
+</div>
+
+<div class="status">
+
+<h2>📋 Recent Login Activity</h2>
+
+<table>
+
+<tr>
+
+<th>User</th>
+<th>Status</th>
+<th>IP Address</th>
+<th>Time</th>
+
+</tr>
+
+{% for log in recent_logs %}
+
+<tr>
+
+<td>{{ log[0] }}</td>
+
+<td>
+
+{% if log[1]=='SUCCESS' %}
+
+<span class="success">✔ SUCCESS</span>
+
+{% else %}
+
+<span class="failed">❌ FAILED</span>
+
+{% endif %}
+
+</td>
+
+<td>{{ log[2] }}</td>
+
+<td>{{ log[3] }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+<div class="status">
+
+<h2>📊 Login Activity Analysis</h2>
+
+<canvas id="loginChart"></canvas>
+
+</div>
+
+<div class="footer">
+
+<a href="/dashboard">⬅ Back Dashboard</a>
+
+</div>
+<script>
+
+const ctx = document.getElementById('loginChart');
+
+new Chart(ctx,{
+
+type:'bar',
+
+data:{
+
+labels:['Success','Failed','SQL Attack'],
+
+datasets:[{
+
+label:'Cyber Security Logs',
+
+data:[
+{{ success_logs }},
+{{ failed_logs }},
+{{ sql_attacks }}
+],
+
+backgroundColor:[
+'#A7F3D0',
+'#FECACA',
+'#FDE68A'
+],
+
+borderRadius:10
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+plugins:{
+
+legend:{
+display:false
+}
+
+},
+
+scales:{
+
+y:{
+
+beginAtZero:true
+
+}
+
+}
+
+}
+
+});
+
+</script>
+
+</body>
+</html>

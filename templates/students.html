@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Students Database</title>
+
+    <style>
+
+body{
+    font-family:Arial;
+    background:#f4f7fb;
+    margin:40px;
+}
+
+h2{
+    text-align:center;
+    color:#003366;
+}
+
+table{
+
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+th{
+
+    background:#003366;
+    color:white;
+    padding:12px;
+}
+
+td{
+
+    padding:10px;
+    text-align:center;
+}
+
+tr:nth-child(even){
+
+    background:#f2f2f2;
+}
+
+tr:hover{
+
+    background:#d9edf7;
+}
+
+a{
+
+    text-decoration:none;
+    background:#003366;
+    color:white;
+    padding:10px 18px;
+    border-radius:6px;
+}
+
+.top{
+
+    margin-bottom:20px;
+}
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="top">
+<a href="/dashboard">⬅ Back to Dashboard</a>
+</div>
+
+<h2>Students Database</h2>
+
+<table border="1">
+
+<tr>
+
+<th>ID</th>
+<th>Reg No</th>
+<th>Name</th>
+<th>Father</th>
+<th>Mother</th>
+<th>Blood Group</th>
+<th>Address</th>
+<th>Phone</th>
+<th>Email</th>
+<th>Department</th>
+<th>Year</th>
+
+</tr>
+
+{% for s in students %}
+
+<tr>
+
+<td>{{ s[0] }}</td>
+<td>{{ s[1] }}</td>
+<td>{{ s[2] }}</td>
+<td>{{ s[3] }}</td>
+<td>{{ s[4] }}</td>
+<td>{{ s[5] }}</td>
+<td>{{ s[6] }}</td>
+<td>{{ s[7] }}</td>
+<td>{{ s[8] }}</td>
+<td>{{ s[9] }}</td>
+<td>{{ s[10] }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</body>
+</html>
+```

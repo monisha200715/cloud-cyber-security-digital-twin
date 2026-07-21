@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Security Dashboard</title>
+
+    <meta http-equiv="refresh" content="5">
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #eef2f7;
+            margin: 0;
+        }
+
+        h2 {
+            text-align: center;
+            padding: 20px;
+            color: #222;
+        }
+
+        table {
+            width: 90%;
+            margin: auto;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: #222;
+            color: white;
+            padding: 10px;
+        }
+
+        td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        tr:nth-child(even) {
+            background: #f2f2f2;
+        }
+
+        .success { color: green; font-weight: bold; }
+        .failed { color: red; font-weight: bold; }
+
+        .box {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px;
+        }
+
+        .card {
+            padding: 15px 25px;
+            border-radius: 10px;
+            color: white;
+        }
+
+        .total { background: #2ecc71; }
+        .succ { background: #3498db; }
+        .fail { background: #e74c3c; }
+
+        /* 🚨 ALERT BOX */
+        .alert {
+            width: 85%;
+            margin: 20px auto;
+            padding: 15px;
+            background: #ff4d4d;
+            color: white;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .risk {
+            background: #ffe6e6 !important;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>🔐 Cyber Security Threat Dashboard</h2>
+
+<!-- 🚨 SUSPICIOUS ALERT -->
+{% if suspicious_ips %}
+<div class="alert">
+    🚨 Suspicious Activity Detected (Possible Brute Force Attack)
+    <br><br>
+    {% for ip in suspicious_ips %}
+        🔴 IP: {{ ip[0] }} | Attempts: {{ ip[1] }} <br>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- 🔥 STATS -->
+<div class="box">
+
+    <div class="card total">
+        Total Logs<br>
+        <b>{{ logs|length }}</b>
+    </div>
+
+    <div class="card succ">
+        Success<br>
+        <b>{{ logs | selectattr(2, 'equalto', 'SUCCESS') | list | length }}</b>
+    </div>
+
+    <div class="card fail">
+        Failed<br>
+        <b>{{ logs | selectattr(2, 'equalto', 'FAILED') | list | length }}</b>
+    </div>
+
+</div>
+
+<!-- 📊 TABLE -->
+<table>
+
+<tr>
+    <th>ID</th>
+    <th>Username</th>
+    <th>Status</th>
+    <th>IP</th>
+    <th>Browser</th>
+    <th>OS</th>
+    <th>Device</th>
+    <th>Time</th>
+    <th>Country</th>
+    <th>City</th>
+</tr>
+
+{% for l in logs %}
+<tr
+{% for ip in suspicious_ips %}
+    {% if l[3] == ip[0] %}
+        class="risk"
+    {% endif %}
+{% endfor %}
+>
+
+    <td>{{ l[0] }}</td>
+    <td>{{ l[1] }}</td>
+
+    <td>
+        {% if l[2] == 'SUCCESS' %}
+            <span class="success">✔ SUCCESS</span>
+        {% else %}
+            <span class="failed">❌ FAILED</span>
+        {% endif %}
+    </td>
+
+<td>{{ l[3] }}</td>   <!-- IP -->
+<td>{{ l[4] }}</td>   <!-- Browser -->
+<td>{{ l[5] }}</td>   <!-- OS -->
+<td>{{ l[6] }}</td>   <!-- Device -->
+<td>{{ l[10] }}</td>  <!-- Time -->
+<td>{{ l[7] }}</td>   <!-- Country -->
+<td>{{ l[8] }}</td>   <!-- City -->
+</tr>
+{% endfor %}
+
+</table>
+
+</body>
+</html>
