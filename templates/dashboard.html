@@ -1,187 +1,897 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Dashboard</title>
+<html lang="en">
 
-    <style>
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Cyber Security Command Center</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<style>
 
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, sans-serif;
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
 }
 
 body{
-    background:#eef3f8;
+background:#081223;
+display:flex;
+color:#1e293b;
 }
 
-.header{
-    background:#003366;
-    color:white;
-    padding:20px;
-    text-align:center;
+.sidebar{
+position:fixed;
+left:0;
+top:0;
+width:260px;
+height:100vh;
+background:#071A35;
+padding:25px;
 }
 
-.header h1{
-    margin-bottom:5px;
+.logo{
+text-align:center;
+margin-bottom:40px;
 }
 
-.container{
-    width:90%;
-    margin:auto;
-    margin-top:40px;
+.logo i{
+font-size:55px;
+color:#3b82f6;
+margin-bottom:10px;
+}
+
+.logo h2{
+font-size:24px;
+color:white;
+}
+
+.logo p{
+font-size:13px;
+color:#94a3b8;
+margin-top:5px;
+}
+
+.menu{
+list-style:none;
+}
+
+.menu li{
+margin-bottom:12px;
+}
+
+.menu a{
+display:flex;
+align-items:center;
+gap:12px;
+padding:14px 18px;
+border-radius:12px;
+text-decoration:none;
+color:#e2e8f0;
+transition:.3s;
+font-size:15px;
+}
+
+.menu a:hover{
+background:#2563eb;
+}
+
+.main{
+margin-left:260px;
+width:100%;
+padding:30px;
+}
+
+.topbar{
+background:#102542;
+color:white;
+padding:18px 30px;
+border-radius:18px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
+
+.topbar h2{
+font-size:28px;
+color:white;
+}
+
+.user-box{
+display:flex;
+align-items:center;
+gap:10px;
+font-weight:600;
+color:#2563eb;
+}
+
+.user-box i{
+font-size:28px;
 }
 
 .welcome{
-    text-align:center;
-    margin-bottom:30px;
+margin-top:30px;
+background:linear-gradient(135deg,#0B3D91,#1E5EFF);
+padding:35px;
+border-radius:20px;
+color:white;
+box-shadow:0 10px 25px rgba(37,99,235,.35);
 }
 
-.cards{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:25px;
+.welcome h1{
+font-size:34px;
+margin-bottom:12px;
 }
 
-.card{
-
-    background:white;
-    border-radius:12px;
-    padding:30px;
-    text-align:center;
-    box-shadow:0px 4px 10px rgba(0,0,0,0.15);
-    transition:.3s;
+.welcome p{
+font-size:16px;
+line-height:28px;
+max-width:700px;
 }
 
-.card:hover{
-
-    transform:translateY(-8px);
-}
-
-.card h2{
-
-    margin-bottom:15px;
-    color:#003366;
-}
-
-.card p{
-
-    margin-bottom:20px;
-    color:#555;
-}
-
-.card a{
-
-    text-decoration:none;
-    background:#003366;
-    color:white;
-    padding:10px 18px;
-    border-radius:6px;
-}
-
-.footer{
-
-    margin-top:50px;
-    text-align:center;
-    color:gray;
-    padding:20px;
-}
-
-    </style>
+</style>
 
 </head>
 
 <body>
 
-<div class="header">
+<div class="sidebar">
 
-<h1>🔐 Cloud Cyber Security Digital Twin</h1>
+<div class="logo">
 
-<h3>Dashboard</h3>
+<i class="fas fa-shield-halved"></i>
+
+<h2>Cyber Command</h2>
+
+<p>Digital Twin Security</p>
 
 </div>
 
-<div class="container">
+<ul class="menu">
+
+<li>
+<a href="/dashboard">
+<i class="fas fa-house"></i>
+Dashboard
+</a>
+</li>
+
+<li>
+<a href="/students">
+<i class="fas fa-user-graduate"></i>
+Students
+</a>
+</li>
+
+<li>
+<a href="/admin">
+<i class="fas fa-user-shield"></i>
+Security Logs
+</a>
+</li>
+
+<li>
+<a href="/digital-twin">
+<i class="fas fa-microchip"></i>
+Digital Twin
+</a>
+</li>
+
+<li>
+<a href="/report">
+<i class="fas fa-file-pdf"></i>
+Reports
+</a>
+</li>
+
+<li>
+<a href="/logout">
+<i class="fas fa-right-from-bracket"></i>
+Logout
+</a>
+</li>
+
+</ul>
+
+</div>
+
+<div class="main">
+
+<div class="topbar">
+
+<h2>🛡 Cyber Security Command Center</h2>
+
+<div class="user-box">
+
+<i class="fas fa-circle-user"></i>
+
+<span>{{ username }}</span>
+
+</div>
+
+</div>
 
 <div class="welcome">
 
-<h2>Welcome {{ session['user'] }}</h2>
+<h1>Welcome Back 👋</h1>
 
-<p>Manage your Cyber Security System</p>
+<p>
+
+Manage students, monitor cyber threats, analyse Digital Twin,
+track security logs and generate reports from one centralized
+Cyber Security Command Center.
+
+</p>
 
 </div>
+<!-- =========================
+     Overview Cards
+========================= -->
 
-<div class="cards">
+<style>
+
+.dashboard-cards{
+margin-top:30px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+gap:25px;
+}
+
+.card{
+background:#102542;
+color:white;
+border-radius:20px;
+padding:25px;
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+transition:.3s;
+position:relative;
+overflow:hidden;
+}
+
+.card:hover{
+transform:translateY(-8px);
+}
+
+.card::before{
+content:"";
+position:absolute;
+left:0;
+top:0;
+width:6px;
+height:100%;
+background:#2563eb;
+}
+
+.card-icon{
+width:65px;
+height:65px;
+border-radius:15px;
+background:#dbeafe;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:28px;
+color:#2563eb;
+margin-bottom:18px;
+}
+
+.card h4{
+font-size:16px;
+color:#B7C8E6;
+margin-bottom:8px;
+font-weight:500;
+}
+
+.card h2{
+font-size:34px;
+color:white;
+margin-bottom:10px;
+}
+
+.card p{
+font-size:14px;
+color:#6EE7B7;
+font-weight:600;
+}
+
+</style>
+
+<div class="dashboard-cards">
 
 <div class="card">
 
-<h2>👨‍🎓 Students</h2>
+<div class="card-icon">
+<i class="fas fa-user-graduate"></i>
+</div>
 
-<p>View Student Records</p>
+<h4>Total Students</h4>
 
-<a href="/students">Open</a>
+<h2>{{ student_count }}</h2>
+
+<p>
+<i class="fas fa-arrow-trend-up"></i>
+Registered Users
+</p>
 
 </div>
 
 <div class="card">
 
-<h2>🛡 Security Logs</h2>
+<div class="card-icon">
+<i class="fas fa-user-shield"></i>
+</div>
 
-<p>Monitor Login Activity</p>
+<h4>Security Logs</h4>
 
-<a href="/admin">Open</a>
+<h2>{{ log_count }}</h2>
+
+<p>
+<i class="fas fa-database"></i>
+Captured Events
+</p>
 
 </div>
 
 <div class="card">
 
-<h2>📊 Digital Twin</h2>
-
-<p>Live Threat Monitoring</p>
-
-<a href="/digital-twin">Open</a>
+<div class="card-icon">
+<i class="fas fa-shield-virus"></i>
 </div>
 
-<div class="card">
+<h4>Threats Blocked</h4>
 
-<h2>📄 Reports</h2>
+<h2>{{ threat_count }}</h2>
 
-<p>Download PDF / Excel</p>
-
-<a href="/download-report">Download PDF</a>
-
-</div>
-
-<div class="card">
-
-<h2>📧 Email Alert</h2>
-
-<p>Security Notification</p>
-
-<a href="#">Coming Soon</a>
+<p>
+<i class="fas fa-circle-check"></i>
+Protected
+</p>
 
 </div>
 
 <div class="card">
 
-<h2>🚪 Logout</h2>
+<div class="card-icon">
+<i class="fas fa-chart-line"></i>
+</div>
 
-<p>Exit Securely</p>
+<h4>AI Security Score</h4>
 
-<a href="/logout">Logout</a>
+<h2>96%</h2>
+
+<p>
+<i class="fas fa-shield-halved"></i>
+System Secure
+</p>
 
 </div>
 
 </div>
+<!-- =========================
+     Quick Access Section
+========================= -->
+
+<style>
+
+.section-title{
+margin-top:40px;
+margin-bottom:20px;
+font-size:28px;
+font-weight:600;
+color:white;
+}
+
+.quick-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:25px;
+}
+
+.quick-card{
+background:#102542;
+color:white;
+border-radius:20px;
+padding:25px;
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+text-align:center;
+transition:.3s;
+}
+
+.quick-card:hover{
+transform:translateY(-8px);
+box-shadow:0 15px 30px rgba(37,99,235,.18);
+}
+
+.quick-icon{
+width:70px;
+height:70px;
+margin:auto;
+border-radius:18px;
+background:#dbeafe;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:30px;
+color:#2563eb;
+margin-bottom:18px;
+}
+
+.quick-card h3{
+margin-bottom:10px;
+color:white;
+}
+
+.quick-card p{
+font-size:14px;
+color:#cbd5e1;
+line-height:24px;
+margin-bottom:20px;
+}
+
+.quick-btn{
+display:inline-block;
+padding:10px 24px;
+background:#2563eb;
+color:white;
+text-decoration:none;
+border-radius:10px;
+font-weight:600;
+transition:.3s;
+}
+
+.quick-btn:hover{
+background:#1d4ed8;
+}
+
+</style>
+
+<h2 class="section-title">
+⚡ Quick Access
+</h2>
+
+<div class="quick-grid">
+
+<div class="quick-card">
+
+<div class="quick-icon">
+<i class="fas fa-user-graduate"></i>
+</div>
+
+<h3>Student Management</h3>
+
+<p>
+Manage student records and user information securely.
+</p>
+
+<a href="/students" class="quick-btn">
+Open
+</a>
 
 </div>
+
+<div class="quick-card">
+
+<div class="quick-icon">
+<i class="fas fa-user-shield"></i>
+</div>
+
+<h3>Security Logs</h3>
+
+<p>
+View login history and cyber security event logs.
+</p>
+
+<a href="/admin" class="quick-btn">
+Open
+</a>
+
+</div>
+
+<div class="quick-card">
+
+<div class="quick-icon">
+<i class="fas fa-microchip"></i>
+</div>
+
+<h3>Digital Twin</h3>
+
+<p>
+Monitor real-time cyber security status and AI analytics.
+</p>
+
+<a href="/digital-twin" class="quick-btn">
+Open
+</a>
+
+</div>
+
+<div class="quick-card">
+
+<div class="quick-icon">
+<i class="fas fa-file-pdf"></i>
+</div>
+
+<h3>Security Reports</h3>
+
+<p>
+Generate and download detailed cyber security reports.
+</p>
+
+<a href="/report" class="quick-btn">
+Download
+</a>
+
+</div>
+
+<div class="quick-card">
+
+<div class="quick-icon">
+<i class="fas fa-envelope"></i>
+</div>
+
+<h3>Email Alerts</h3>
+
+<p>
+Send instant security notifications to administrators.
+</p>
+
+<a href="/test-email" class="quick-btn">
+Test
+</a>
+
+</div>
+
+<div class="quick-card">
+
+<div class="quick-icon">
+<i class="fas fa-right-from-bracket"></i>
+</div>
+
+<h3>Logout</h3>
+
+<p>
+Sign out securely from the Cyber Security Command Center.
+</p>
+
+<a href="/logout" class="quick-btn">
+Logout
+</a>
+
+</div>
+
+</div>
+<!-- =========================
+     Security Health & Recent Activity
+========================= -->
+
+<style>
+
+.security-section{
+margin-top:40px;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:25px;
+}
+
+.security-card{
+background:#102542;
+color:white;
+border-radius:20px;
+padding:25px;
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+.security-card h3{
+font-size:22px;
+margin-bottom:20px;
+color:white;
+}
+
+.status-box{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:14px 0;
+border-bottom:1px solid #e5e7eb;
+font-size:15px;
+}
+
+.status-active{
+color:#16a34a;
+font-weight:600;
+}
+
+.status-warning{
+color:#f59e0b;
+font-weight:600;
+}
+
+.status-danger{
+color:#dc2626;
+font-weight:600;
+}
+
+.activity-table{
+width:100%;
+border-collapse:collapse;
+}
+
+.activity-table th{
+background:#2563eb;
+color:white;
+padding:12px;
+font-size:15px;
+}
+
+.activity-table td{
+padding:12px;
+text-align:center;
+border-bottom:1px solid #e5e7eb;
+font-size:14px;
+}
+
+.activity-table tr:hover{
+background:#f8fbff;
+}
+
+</style>
+
+<h2 class="section-title">
+🛡 Security Health
+</h2>
+
+<div class="security-section">
+
+<div class="security-card">
+
+<h3>System Status</h3>
+
+<div class="status-box">
+<span>Firewall</span>
+<span class="status-active">✔ Active</span>
+</div>
+
+<div class="status-box">
+<span>Database</span>
+<span class="status-active">✔ Connected</span>
+</div>
+
+<div class="status-box">
+<span>AI Detection Engine</span>
+<span class="status-active">✔ Running</span>
+</div>
+
+<div class="status-box">
+<span>Email Alert Service</span>
+<span class="status-active">✔ Online</span>
+</div>
+
+<div class="status-box">
+<span>Server Status</span>
+<span class="status-active">✔ Healthy</span>
+</div>
+
+<div class="status-box">
+<span>Current Threat Level</span>
+<span class="status-warning">Medium</span>
+</div>
+
+<div class="status-box">
+<span>SQL Injection Protection</span>
+<span class="status-active">✔ Enabled</span>
+</div>
+
+</div>
+
+<div class="security-card">
+
+<h3>Recent Activities</h3>
+
+<table class="activity-table">
+
+<tr>
+<th>Time</th>
+<th>Activity</th>
+<th>Status</th>
+</tr>
+
+<tr>
+<td>10:12 AM</td>
+<td>Student Login</td>
+<td class="status-active">Success</td>
+</tr>
+
+<tr>
+<td>10:24 AM</td>
+<td>Admin Login</td>
+<td class="status-active">Verified</td>
+</tr>
+
+<tr>
+<td>10:39 AM</td>
+<td>SQL Injection Attempt</td>
+<td class="status-danger">Blocked</td>
+</tr>
+
+<tr>
+<td>10:56 AM</td>
+<td>Threat Scan</td>
+<td class="status-active">Completed</td>
+</tr>
+
+<tr>
+<td>11:10 AM</td>
+<td>PDF Report Generated</td>
+<td class="status-active">Done</td>
+</tr>
+
+<tr>
+<td>11:18 AM</td>
+<td>Email Alert Sent</td>
+<td class="status-active">Delivered</td>
+</tr>
+
+</table>
+
+</div>
+
+</div>
+<!-- =========================
+     Footer
+========================= -->
+
+<style>
+
+.footer{
+
+margin-top:40px;
+background:#102542;
+color:white;
+padding:20px 30px;
+border-radius:18px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+}
+
+.footer-left{
+
+font-size:15px;
+color:#cbd5e1;
+
+}
+
+.footer-right{
+
+font-size:15px;
+font-weight:600;
+color:#2563eb;
+
+}
+
+#liveTime{
+
+font-weight:600;
+
+}
+
+@media(max-width:992px){
+
+.sidebar{
+
+width:80px;
+
+}
+
+.sidebar .logo h2,
+.sidebar .logo p,
+.sidebar .menu a span{
+
+display:none;
+
+}
+
+.sidebar .menu a{
+
+justify-content:center;
+
+}
+
+.main{
+
+margin-left:80px;
+
+}
+
+.security-section{
+
+grid-template-columns:1fr;
+
+}
+
+.dashboard-cards{
+
+grid-template-columns:1fr;
+
+}
+
+.quick-grid{
+
+grid-template-columns:1fr;
+
+}
+
+.footer{
+
+flex-direction:column;
+gap:10px;
+text-align:center;
+
+}
+
+}
+
+</style>
 
 <div class="footer">
 
-© 2026 Cloud Cyber Security Digital Twin System
+<div class="footer-left">
+
+© 2026 Cyber Security Command Center | Cloud Digital Twin Security Platform
 
 </div>
 
+<div class="footer-right">
+
+<span id="liveTime"></span>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function updateTime(){
+
+const now=new Date();
+
+const options={
+
+weekday:'short',
+year:'numeric',
+month:'short',
+day:'numeric',
+hour:'2-digit',
+minute:'2-digit',
+second:'2-digit'
+
+};
+
+document.getElementById("liveTime").innerHTML=
+
+now.toLocaleString('en-IN',options);
+
+}
+
+updateTime();
+
+setInterval(updateTime,1000);
+
+</script>
+
 </body>
+
 </html>

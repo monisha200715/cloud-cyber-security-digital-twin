@@ -1,122 +1,669 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Cloud Cyber Security Digital Twin</title>
 
-    <style>
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-            font-family:Arial,sans-serif;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        body{
-            background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            height:100vh;
-        }
+<title>Cyber Security Command Center</title>
 
-        .box{
-            width:400px;
-            background:#fff;
-            padding:35px;
-            border-radius:12px;
-            box-shadow:0 0 25px rgba(0,0,0,.3);
-        }
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-        h2{
-            text-align:center;
-            color:#2c3e50;
-            margin-bottom:10px;
-        }
+<style>
 
-        p{
-            text-align:center;
-            color:#666;
-            margin-bottom:25px;
-        }
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:"Poppins",sans-serif;
+}
 
-        label{
-            font-weight:bold;
-            color:#333;
-        }
+body{
 
-        input[type=text],
-        input[type=password]{
-            width:100%;
-            padding:12px;
-            margin-top:6px;
-            margin-bottom:18px;
-            border:1px solid #ccc;
-            border-radius:6px;
-        }
+height:100vh;
 
-        input[type=submit]{
-            width:100%;
-            padding:12px;
-            background:#27ae60;
-            color:white;
-            border:none;
-            border-radius:6px;
-            cursor:pointer;
-            font-size:16px;
-        }
+display:flex;
+justify-content:center;
+align-items:center;
 
-        input[type=submit]:hover{
-            background:#219150;
-        }
+background:
+linear-gradient(rgba(8,18,35,.95),rgba(8,18,35,.95)),
+radial-gradient(circle at top,#1d4ed8 0%,#081223 70%);
 
-        .error{
-            margin-top:15px;
-            text-align:center;
-            color:red;
-            font-weight:bold;
-        }
+overflow:hidden;
 
-        .footer{
-            margin-top:20px;
-            text-align:center;
-            color:#888;
-            font-size:13px;
-        }
-    </style>
+}
+
+/* Background Glow */
+
+body::before{
+
+content:"";
+
+position:absolute;
+
+width:500px;
+height:500px;
+
+background:#2563eb;
+
+border-radius:50%;
+
+filter:blur(180px);
+
+top:-180px;
+right:-120px;
+
+opacity:.25;
+
+}
+
+body::after{
+
+content:"";
+
+position:absolute;
+
+width:400px;
+height:400px;
+
+background:#0ea5e9;
+
+border-radius:50%;
+
+filter:blur(180px);
+
+bottom:-180px;
+left:-100px;
+
+opacity:.18;
+
+}
+
+/* Login Card */
+
+.login-card{
+
+position:relative;
+z-index:10;
+
+width:450px;
+
+padding:45px;
+
+background:rgba(16,37,66,.88);
+
+backdrop-filter:blur(15px);
+
+border:1px solid rgba(255,255,255,.08);
+
+border-radius:22px;
+
+box-shadow:0 25px 60px rgba(0,0,0,.45);
+
+}
+
+/* Logo */
+
+.logo{
+
+width:90px;
+height:90px;
+
+margin:auto;
+
+border-radius:50%;
+
+background:linear-gradient(135deg,#2563eb,#60a5fa);
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+box-shadow:0 0 30px rgba(37,99,235,.55);
+
+margin-bottom:20px;
+
+}
+
+.logo i{
+
+font-size:40px;
+color:white;
+
+}
+
+/* Heading */
+
+h2{
+
+text-align:center;
+
+color:white;
+
+font-size:30px;
+
+margin-bottom:10px;
+
+}
+
+.subtitle{
+
+text-align:center;
+
+color:#cbd5e1;
+
+font-size:15px;
+
+margin-bottom:35px;
+
+line-height:24px;
+
+}
+/* ===========================
+   Login Form
+=========================== */
+
+label{
+
+display:block;
+
+margin-bottom:8px;
+
+font-size:15px;
+
+font-weight:600;
+
+color:#e2e8f0;
+
+}
+
+.input-group{
+
+position:relative;
+
+margin-bottom:22px;
+
+}
+
+.input-group i{
+
+position:absolute;
+
+left:16px;
+
+top:17px;
+
+color:#60a5fa;
+
+font-size:16px;
+
+}
+
+.input-group input{
+
+width:100%;
+
+padding:15px 48px;
+
+background:#0f1f38;
+
+border:1px solid #27456d;
+
+border-radius:12px;
+
+color:white;
+
+font-size:15px;
+
+outline:none;
+
+transition:.3s;
+
+}
+
+.input-group input::placeholder{
+
+color:#94a3b8;
+
+}
+
+.input-group input:focus{
+
+border-color:#3b82f6;
+
+box-shadow:0 0 15px rgba(59,130,246,.35);
+
+}
+
+.eye{
+
+position:absolute;
+
+right:18px;
+
+top:17px;
+
+cursor:pointer;
+
+color:#94a3b8;
+
+}
+
+.options{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:28px;
+
+}
+
+.options label{
+
+display:flex;
+
+align-items:center;
+
+gap:8px;
+
+font-size:14px;
+
+font-weight:500;
+
+cursor:pointer;
+
+color:#cbd5e1;
+
+}
+
+.options input{
+
+width:16px;
+
+height:16px;
+
+accent-color:#2563eb;
+
+}
+
+.login-btn{
+
+width:100%;
+
+padding:15px;
+
+border:none;
+
+border-radius:12px;
+
+background:linear-gradient(135deg,#2563eb,#1d4ed8);
+
+color:white;
+
+font-size:16px;
+
+font-weight:700;
+
+cursor:pointer;
+
+transition:.3s;
+
+box-shadow:0 10px 25px rgba(37,99,235,.35);
+
+}
+
+.login-btn:hover{
+
+transform:translateY(-3px);
+
+box-shadow:0 18px 35px rgba(37,99,235,.55);
+
+}
+
+.login-btn:disabled{
+
+opacity:.7;
+
+cursor:not-allowed;
+
+}
+
+.error{
+
+margin-top:20px;
+
+padding:12px;
+
+border-radius:10px;
+
+background:#7f1d1d;
+
+color:#fecaca;
+
+text-align:center;
+
+font-size:14px;
+
+}
+
+</style>
 
 </head>
 
 <body>
 
-<div class="box">
+<div class="login-card">
 
-<h2>🔐 Cloud Cyber Security Digital Twin</h2>
+<div class="logo">
 
-<p>Secure Login Portal</p>
+<i class="fas fa-shield-halved"></i>
+
+</div>
+
+<h2>Cyber Security</h2>
+
+<p class="subtitle">
+
+Command Center<br>
+
+Secure Access Portal
+
+</p>
 
 <form method="POST">
 
 <label>Username</label>
-<input type="text" name="username" required>
+
+<div class="input-group">
+
+<i class="fas fa-user"></i>
+
+<input
+
+type="text"
+
+name="username"
+
+placeholder="Enter your username"
+
+required>
+
+</div>
 
 <label>Password</label>
-<input type="password" name="password" required>
 
-<input type="submit" value="Login">
+<div class="input-group">
 
-</form>
+<i class="fas fa-lock"></i>
 
-{% if error %}
-<div class="error">
-🚫 {{ error }}
+<input
+
+type="password"
+
+id="password"
+
+name="password"
+
+placeholder="Enter your password"
+
+required>
+
+<span class="eye"
+
+onclick="togglePassword()">
+
+<i id="eye"
+
+class="fas fa-eye"></i>
+
+</span>
+
 </div>
+
+<div class="options">
+
+<label>
+
+<input
+
+type="checkbox"
+
+name="remember">
+
+Remember Me
+
+</label>
+
+</div>
+
+<button
+
+type="submit"
+
+class="login-btn"
+
+id="loginBtn">
+
+<i class="fas fa-right-to-bracket"></i>
+
+SIGN IN
+
+</button>
+<div style="text-align:center;margin-top:15px;">
+
+<a href="/forgot-password"
+style="color:#60a5fa;text-decoration:none;font-size:15px;">
+
+Forgot Password?
+
+</a>
+
+</div>
+{% if error %}
+
+<div class="error">
+
+<i class="fas fa-circle-exclamation"></i>
+
+{{ error }}
+
+</div>
+
 {% endif %}
+<div class="status-box">
+
+<div class="status-dot"></div>
+
+<span>System Status : ONLINE</span>
+
+</div>
 
 <div class="footer">
-Powered by Flask + PostgreSQL
+
+<hr>
+
+<p>Powered by Flask • PostgreSQL • Cloud Security</p>
+
+<p>Version 1.0 | Cyber Security Command Center</p>
+
 </div>
 
 </div>
+
+<script>
+
+function togglePassword(){
+
+let password=document.getElementById("password");
+
+let eye=document.getElementById("eye");
+
+if(password.type==="password"){
+
+password.type="text";
+
+eye.classList.remove("fa-eye");
+
+eye.classList.add("fa-eye-slash");
+
+}
+
+else{
+
+password.type="password";
+
+eye.classList.remove("fa-eye-slash");
+
+eye.classList.add("fa-eye");
+
+}
+
+}
+
+const form=document.querySelector("form");
+
+const btn=document.getElementById("loginBtn");
+
+form.addEventListener("submit",function(){
+
+btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Signing In...';
+
+btn.disabled=true;
+
+});
+
+</script>
+
+<style>
+
+.status-box{
+
+margin-top:30px;
+
+padding:15px;
+
+border-radius:12px;
+
+background:rgba(34,197,94,.12);
+
+border:1px solid rgba(34,197,94,.35);
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+gap:10px;
+
+color:#22c55e;
+
+font-weight:600;
+
+}
+
+.status-dot{
+
+width:12px;
+
+height:12px;
+
+background:#22c55e;
+
+border-radius:50%;
+
+animation:pulse 1.5s infinite;
+
+}
+
+@keyframes pulse{
+
+0%{
+
+transform:scale(1);
+
+opacity:1;
+
+}
+
+50%{
+
+transform:scale(1.5);
+
+opacity:.5;
+
+}
+
+100%{
+
+transform:scale(1);
+
+opacity:1;
+
+}
+
+}
+
+.footer{
+
+margin-top:25px;
+
+text-align:center;
+
+color:#94a3b8;
+
+font-size:13px;
+
+}
+
+.footer hr{
+
+border:none;
+
+border-top:1px solid rgba(255,255,255,.1);
+
+margin-bottom:15px;
+
+}
+
+.footer p{
+
+margin:6px 0;
+
+}
+
+@media(max-width:500px){
+
+.login-card{
+
+width:92%;
+
+padding:30px;
+
+}
+
+h2{
+
+font-size:24px;
+
+}
+
+.subtitle{
+
+font-size:14px;
+
+}
+
+}
+
+</style>
 
 </body>
+
 </html>

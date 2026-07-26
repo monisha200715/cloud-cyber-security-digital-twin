@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Edit Student</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:"Poppins",sans-serif;
+}
+
+body{
+
+background:#081223;
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+padding:30px;
+
+}
+
+.container{
+
+width:900px;
+background:#102542;
+padding:35px;
+border-radius:20px;
+box-shadow:0 15px 35px rgba(0,0,0,.35);
+
+}
+
+h2{
+
+text-align:center;
+color:white;
+margin-bottom:30px;
+
+}
+
+.form-grid{
+
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:20px;
+
+}
+
+.input-box{
+
+display:flex;
+flex-direction:column;
+
+}
+
+.input-box label{
+
+color:#dbeafe;
+margin-bottom:8px;
+font-weight:600;
+
+}
+
+.input-box input,
+.input-box select,
+.input-box textarea{
+
+padding:12px;
+border:none;
+border-radius:10px;
+background:#1b3558;
+color:white;
+font-size:15px;
+outline:none;
+
+}
+
+.input-box textarea{
+
+resize:none;
+height:90px;
+
+}
+
+.full{
+
+grid-column:1/3;
+
+}
+
+.buttons{
+
+margin-top:30px;
+display:flex;
+justify-content:center;
+gap:15px;
+
+}
+
+.update-btn{
+
+background:#f59e0b;
+color:white;
+padding:14px 30px;
+border:none;
+border-radius:10px;
+font-size:16px;
+font-weight:600;
+cursor:pointer;
+
+}
+
+.update-btn:hover{
+
+background:#d97706;
+
+}
+
+.back-btn{
+
+background:#6b7280;
+color:white;
+padding:14px 30px;
+text-decoration:none;
+border-radius:10px;
+
+}
+
+.back-btn:hover{
+
+background:#4b5563;
+
+}
+
+@media(max-width:768px){
+
+.form-grid{
+
+grid-template-columns:1fr;
+
+}
+
+.full{
+
+grid-column:1;
+
+}
+
+.container{
+
+width:100%;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>
+
+<i class="fas fa-user-edit"></i>
+
+Edit Student
+
+</h2>
+
+<form method="POST">
+
+<div class="form-grid">
+    <div class="input-box">
+
+<label>Registration Number</label>
+
+<input
+type="text"
+name="reg_no"
+value="{{ student[1] }}"
+required>
+
+</div>
+
+<div class="input-box">
+
+<label>Student Name</label>
+
+<input
+type="text"
+name="name"
+value="{{ student[2] }}"
+required>
+
+</div>
+
+<div class="input-box">
+
+<label>Father Name</label>
+
+<input
+type="text"
+name="father"
+value="{{ student[3] }}"
+required>
+
+</div>
+
+<div class="input-box">
+
+<label>Mother Name</label>
+
+<input
+type="text"
+name="mother"
+value="{{ student[4] }}"
+required>
+
+</div>
+
+<div class="input-box">
+
+<label>Blood Group</label>
+
+<select name="blood_group" required>
+
+<option value="A+" {% if student[5]=='A+' %}selected{% endif %}>A+</option>
+<option value="A-" {% if student[5]=='A-' %}selected{% endif %}>A-</option>
+<option value="B+" {% if student[5]=='B+' %}selected{% endif %}>B+</option>
+<option value="B-" {% if student[5]=='B-' %}selected{% endif %}>B-</option>
+<option value="AB+" {% if student[5]=='AB+' %}selected{% endif %}>AB+</option>
+<option value="AB-" {% if student[5]=='AB-' %}selected{% endif %}>AB-</option>
+<option value="O+" {% if student[5]=='O+' %}selected{% endif %}>O+</option>
+<option value="O-" {% if student[5]=='O-' %}selected{% endif %}>O-</option>
+
+</select>
+
+</div>
+
+<div class="input-box">
+
+<label>Age</label>
+
+<input
+type="number"
+name="age"
+value="{{ student[11] }}"
+required>
+
+</div>
+<div class="input-box">
+
+<label>Phone Number</label>
+
+<input
+type="text"
+name="phone"
+value="{{ student[7] }}"
+required>
+
+</div>
+
+<div class="input-box">
+
+<label>Email Address</label>
+
+<input
+type="email"
+name="email"
+value="{{ student[8] }}"
+required>
+
+</div>
+
+<div class="input-box full">
+
+<label>Address</label>
+
+<textarea
+name="address"
+required>{{ student[6] }}</textarea>
+
+</div>
+
+<div class="input-box">
+
+<label>Department</label>
+
+<select name="department" required>
+
+<option value="BCA" {% if student[9]=='BCA' %}selected{% endif %}>BCA</option>
+<option value="B.Sc CS" {% if student[9]=='B.Sc CS' %}selected{% endif %}>B.Sc CS</option>
+<option value="B.Com" {% if student[9]=='B.Com' %}selected{% endif %}>B.Com</option>
+<option value="BBA" {% if student[9]=='BBA' %}selected{% endif %}>BBA</option>
+<option value="BA English" {% if student[9]=='BA English' %}selected{% endif %}>BA English</option>
+<option value="MCA" {% if student[9]=='MCA' %}selected{% endif %}>MCA</option>
+
+</select>
+
+</div>
+
+<div class="input-box">
+
+<label>Year</label>
+
+<select name="year" required>
+
+<option value="I" {% if student[10]=='I' %}selected{% endif %}>I</option>
+<option value="II" {% if student[10]=='II' %}selected{% endif %}>II</option>
+<option value="III" {% if student[10]=='III' %}selected{% endif %}>III</option>
+<option value="IV" {% if student[10]=='IV' %}selected{% endif %}>IV</option>
+
+</select>
+
+</div>
+
+</div>
+
+<div class="buttons">
+
+<button type="submit" class="update-btn" id="updateBtn">
+
+<i class="fas fa-save"></i> Update Student
+
+</button>
+
+<a href="/students" class="back-btn">
+
+<i class="fas fa-arrow-left"></i> Back
+
+</a>
+
+</div>
+
+</form>
+
+</div>
+
+<script>
+
+const form=document.querySelector("form");
+const btn=document.getElementById("updateBtn");
+
+form.addEventListener("submit",function(){
+
+btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Updating...';
+
+btn.disabled=true;
+
+});
+
+</script>
+
+</body>
+
+</html>
