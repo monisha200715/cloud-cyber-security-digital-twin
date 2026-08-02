@@ -662,7 +662,11 @@ background:#f8fbff;
 
 <div class="status-box">
 <span>Database</span>
-<span class="status-active">✔ Connected</span>
+{% if db_status == "Connected" %}
+<span style="color:#22c55e;">✔ Connected</span>
+{% else %}
+<span style="color:#ef4444;">✖ Disconnected</span>
+{% endif %}
 </div>
 
 <div class="status-box">
@@ -682,7 +686,16 @@ background:#f8fbff;
 
 <div class="status-box">
 <span>Current Threat Level</span>
-<span class="status-warning">Medium</span>
+{% if threat_level == "Low" %}
+<span style="color:#22c55e;">🟢 Low</span>
+
+{% elif threat_level == "Medium" %}
+<span style="color:#f59e0b;">🟡 Medium</span>
+
+{% else %}
+<span style="color:#ef4444;">🔴 High</span>
+
+{% endif %}
 </div>
 
 <div class="status-box">
@@ -704,41 +717,25 @@ background:#f8fbff;
 <th>Status</th>
 </tr>
 
+{% for log in recent_logs %}
+
 <tr>
-<td>10:12 AM</td>
-<td>Student Login</td>
+
+<td>{{ log[2].strftime("%I:%M %p") }}</td>
+
+<td>{{ log[0] }}</td>
+
+{% if log[1] == "SUCCESS" %}
 <td class="status-active">Success</td>
+
+{% else %}
+<td class="status-danger">Failed</td>
+
+{% endif %}
+
 </tr>
 
-<tr>
-<td>10:24 AM</td>
-<td>Admin Login</td>
-<td class="status-active">Verified</td>
-</tr>
-
-<tr>
-<td>10:39 AM</td>
-<td>SQL Injection Attempt</td>
-<td class="status-danger">Blocked</td>
-</tr>
-
-<tr>
-<td>10:56 AM</td>
-<td>Threat Scan</td>
-<td class="status-active">Completed</td>
-</tr>
-
-<tr>
-<td>11:10 AM</td>
-<td>PDF Report Generated</td>
-<td class="status-active">Done</td>
-</tr>
-
-<tr>
-<td>11:18 AM</td>
-<td>Email Alert Sent</td>
-<td class="status-active">Delivered</td>
-</tr>
+{% endfor %}
 
 </table>
 

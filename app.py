@@ -1,6 +1,5 @@
 # ==========================================
 # Cloud Cyber Security Digital Twin System
-# app.py (Part 1)
 # ==========================================
 
 from flask import Flask, render_template, request, redirect, session, send_file,url_for, flash
@@ -23,6 +22,7 @@ from reportlab.lib.pagesizes import letter
 # ==========================================
 
 load_dotenv()
+print("DB_HOST =", os.getenv("DB_HOST"))
 
 # ==========================================
 # Flask App Configuration
@@ -109,7 +109,7 @@ def send_security_alert(receiver_email, subject, message):
 
         email.set_content(message)
 
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=10) as smtp:
 
             smtp.login(
                 EMAIL_ADDRESS,
@@ -174,9 +174,7 @@ SQL_KEYWORDS = [
 
 ]
 
-# ==========================================
-# Login Route Starts Here
-# ==========================================# ==========================================
+# ==========================================# 
 # Login Route
 # ==========================================
 
@@ -206,14 +204,13 @@ def login():
                 cur = conn.cursor()
 
                 cur.execute("""
-                INSERT INTO login_logs
-                (username,status,ip_address,browser,
-                operating_system,device_type,
-                country,city,attack_type)
+                    INSERT INTO login_logs
+                    (username,status,ip_address,browser,
+                    operating_system,device_type,
+                    country,city,attack_type)
 
-                VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)
-                """,
-                (
+                    VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                """, (
                     username,
                     "FAILED",
                     ip,
@@ -226,31 +223,8 @@ def login():
                 ))
 
                 conn.commit()
+                cur.close()
                 conn.close()
-
-                # ==========================================
-                # Send Alert Email
-                # ==========================================
-
-                send_security_alert(
-
-                    "SQL Injection Alert",
-
-                    f"""
-SQL Injection Detected
-
-Username : {username}
-
-IP Address : {ip}
-
-Country : {country}
-
-City : {city}
-
-Attack Type : SQL Injection
-"""
-
-                )
 
                 return render_template(
                     "login.html",
@@ -268,36 +242,30 @@ Attack Type : SQL Injection
         ua = parse(request.headers.get("User-Agent", ""))
 
         browser = ua.browser.family
-
         operating_system = ua.os.family
 
         if ua.is_mobile:
-
             device = "Mobile"
-
         elif ua.is_tablet:
-
             device = "Tablet"
-
         else:
-
             device = "Desktop"
 
         conn = get_connection()
-
         cur = conn.cursor()
-                # ==========================================
+
+        # ==========================================
         # Check Username & Password
         # ==========================================
 
         cur.execute("""
-            SELECT * FROM login
+            SELECT *
+            FROM login
             WHERE username=%s AND password=%s
         """, (username, password))
 
         user = cur.fetchone()
-
-        # ==========================================
+                # ==========================================
         # Login Success
         # ==========================================
 
@@ -310,8 +278,7 @@ Attack Type : SQL Injection
                 country,city,attack_type)
 
                 VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)
-            """,
-            (
+            """, (
                 username,
                 "SUCCESS",
                 ip,
@@ -324,11 +291,38 @@ Attack Type : SQL Injection
             ))
 
             conn.commit()
-            conn.close()
 
-            session["user"] = username
+  #          # Send Login Success Email
+ #           if len(user) >= 4 and user[3]:
 
-            return redirect("/dashboard")
+#                send_security_alert(
+#                   user[3],
+#                    "Login Success Alert",
+#                    f"""
+#Your account was logged in successfully.
+
+#Username : {username}
+
+#IP Address : {ip}
+
+#Browser : {browser}
+
+#Operating System : {operating_system}
+
+#Device : {device}
+
+#Country : {country}
+
+#City : {city}
+"""
+                )
+
+            #cur.close()
+            #conn.close()
+
+            #session["user"] = username
+
+            #return redirect("/dashboard")
 
         # ==========================================
         # Failed Login
@@ -341,8 +335,7 @@ Attack Type : SQL Injection
             country,city,attack_type)
 
             VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)
-        """,
-        (
+        """, (
             username,
             "FAILED",
             ip,
@@ -355,17 +348,20 @@ Attack Type : SQL Injection
         ))
 
         conn.commit()
-        conn.close()
+                # Get user's email using username
+        cur.execute(
+            "SELECT email FROM login WHERE username=%s",
+            (username,)
+        )
 
-        # ==========================================
-        # Send Failed Login Email
-        # ==========================================
+        email_data = cur.fetchone()
 
-        send_security_alert(
+        if email_data:
 
-            "Failed Login Alert",
-
-            f"""
+            send_security_alert(
+                email_data[0],
+                "Failed Login Alert",
+                f"""
 A failed login attempt was detected.
 
 Username : {username}
@@ -382,7 +378,10 @@ Country : {country}
 
 City : {city}
 """
-        )
+            )
+
+        cur.close()
+        conn.close()
 
         return render_template(
             "login.html",
@@ -390,6 +389,12 @@ City : {city}
         )
 
     return render_template("login.html")
+
+        # ==========================================
+        # Send Failed Login Email
+        # ==========================================
+
+        
 @app.route("/forgot-password", methods=["GET", "POST"])
 def forgot_password():
 
@@ -494,36 +499,60 @@ def dashboard():
     # Total Login Logs
     cur.execute("SELECT COUNT(*) FROM login_logs")
     log_count = cur.fetchone()[0]
+    # ==========================
+    # Recent Activities
+    # ==========================
 
-    # Failed Login Attempts
+    cur.execute("""
+    SELECT username,
+           status,
+           login_time
+    FROM login_logs
+    ORDER BY login_time DESC
+    LIMIT 6
+    """)
+
+    recent_logs = cur.fetchall()
     cur.execute(
         "SELECT COUNT(*) FROM login_logs WHERE status='FAILED'"
     )
     threat_count = cur.fetchone()[0]
 
+    # ==========================
+    # Threat Level
+    # ==========================
+
+    if threat_count == 0:
+        threat_level = "Low"
+    elif threat_count <= 5:
+        threat_level = "Medium"
+    else:
+        threat_level = "High"
+
+    # ==========================
+    # Database Status
+    # ==========================
+
+    try:
+        test_conn = get_connection()
+        test_conn.close()
+        db_status = "Connected"
+    except:
+        db_status = "Disconnected"
+
     cur.close()
     conn.close()
 
     return render_template(
-
         "dashboard.html",
-
         student_count=student_count,
-
         log_count=log_count,
-
         threat_count=threat_count,
-
-        username=session["user"]
-
+        username=session["user"],
+        db_status=db_status,
+        threat_level=threat_level,
+        recent_logs=recent_logs
     )
-
-# ==========================================
-# Digital Twin Route Starts Here
-# ==========================================# ==========================================
-# Digital Twin Dashboard
-# ==========================================
-
 @app.route("/digital-twin")
 def digital_twin():
 
@@ -990,6 +1019,7 @@ def logout():
 def test_email():
 
     send_security_alert(
+        EMAIL_ADDRESS,
 
         "SMTP Test",
 
