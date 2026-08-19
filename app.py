@@ -205,11 +205,18 @@ def login():
 
                 cur.execute("""
                     INSERT INTO login_logs
-                    (username,status,ip_address,browser,
-                    operating_system,device_type,
-                    country,city,attack_type)
-
-                    VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                    (
+                        username,
+                        status,
+                        ip_address,
+                        browser,
+                        operating_system,
+                        device_type,
+                        country,
+                        city,
+                        attack_type
+                    )
+                    VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)
                 """, (
                     username,
                     "FAILED",
@@ -223,6 +230,7 @@ def login():
                 ))
 
                 conn.commit()
+
                 cur.close()
                 conn.close()
 
@@ -239,17 +247,25 @@ def login():
 
         country, city = get_location(ip)
 
-        ua = parse(request.headers.get("User-Agent", ""))
+        ua = parse(
+            request.headers.get("User-Agent", "")
+        )
 
         browser = ua.browser.family
         operating_system = ua.os.family
 
         if ua.is_mobile:
             device = "Mobile"
+
         elif ua.is_tablet:
             device = "Tablet"
+
         else:
             device = "Desktop"
+
+        # ==========================================
+        # Database Connection
+        # ==========================================
 
         conn = get_connection()
         cur = conn.cursor()
@@ -262,10 +278,14 @@ def login():
             SELECT *
             FROM login
             WHERE username=%s AND password=%s
-        """, (username, password))
+        """, (
+            username,
+            password
+        ))
 
         user = cur.fetchone()
-                # ==========================================
+
+        # ==========================================
         # Login Success
         # ==========================================
 
@@ -273,11 +293,18 @@ def login():
 
             cur.execute("""
                 INSERT INTO login_logs
-                (username,status,ip_address,browser,
-                operating_system,device_type,
-                country,city,attack_type)
-
-                VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                (
+                    username,
+                    status,
+                    ip_address,
+                    browser,
+                    operating_system,
+                    device_type,
+                    country,
+                    city,
+                    attack_type
+                )
+                VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)
             """, (
                 username,
                 "SUCCESS",
@@ -292,37 +319,40 @@ def login():
 
             conn.commit()
 
-  #          # Send Login Success Email
- #           if len(user) >= 4 and user[3]:
+            # ==========================================
+            # Send Login Success Email
+            # ==========================================
 
-#                send_security_alert(
-#                   user[3],
-#                    "Login Success Alert",
-#                    f"""
-#Your account was logged in successfully.
+            if len(user) >= 4 and user[3]:
 
-#Username : {username}
+                send_security_alert(
+                    user[3],
+                    "Login Success Alert",
+                    f"""
+Your account was logged in successfully.
 
-#IP Address : {ip}
+Username : {username}
 
-#Browser : {browser}
+IP Address : {ip}
 
-#Operating System : {operating_system}
+Browser : {browser}
 
-#Device : {device}
+Operating System : {operating_system}
 
-#Country : {country}
+Device : {device}
 
-#City : {city}
+Country : {country}
+
+City : {city}
 """
                 )
 
-            #cur.close()
-            #conn.close()
+            cur.close()
+            conn.close()
 
-            #session["user"] = username
+            session["user"] = username
 
-            #return redirect("/dashboard")
+            return redirect("/dashboard")
 
         # ==========================================
         # Failed Login
@@ -330,11 +360,18 @@ def login():
 
         cur.execute("""
             INSERT INTO login_logs
-            (username,status,ip_address,browser,
-            operating_system,device_type,
-            country,city,attack_type)
-
-            VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)
+            (
+                username,
+                status,
+                ip_address,
+                browser,
+                operating_system,
+                device_type,
+                country,
+                city,
+                attack_type
+            )
+            VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """, (
             username,
             "FAILED",
@@ -348,7 +385,11 @@ def login():
         ))
 
         conn.commit()
-                # Get user's email using username
+
+        # ==========================================
+        # Get User Email Using Username
+        # ==========================================
+
         cur.execute(
             "SELECT email FROM login WHERE username=%s",
             (username,)
@@ -356,7 +397,11 @@ def login():
 
         email_data = cur.fetchone()
 
-        if email_data:
+        # ==========================================
+        # Send Failed Login Email
+        # ==========================================
+
+        if email_data and email_data[0]:
 
             send_security_alert(
                 email_data[0],
@@ -387,6 +432,10 @@ City : {city}
             "login.html",
             error="Invalid Username or Password"
         )
+
+    # ==========================================
+    # GET Request
+    # ==========================================
 
     return render_template("login.html")
 
