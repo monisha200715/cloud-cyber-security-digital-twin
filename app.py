@@ -97,40 +97,50 @@ def get_location(ip):
 # Send Security Alert Email
 # ==========================================
 
-def send_security_alert(receiver_email, subject, message):
+def send_security_alert(to_email, subject, body):
 
     try:
+        sender_email = os.getenv("MAIL_EMAIL")
+        sender_password = os.getenv("MAIL_PASSWORD")
 
-        email = EmailMessage()
+        if not sender_email or not sender_password:
+            print("SMTP credentials are missing")
+            return False
 
-        email["Subject"] = subject
-        email["From"] = EMAIL_ADDRESS
-        email["To"] = receiver_email
+        msg = EmailMessage()
 
-        email.set_content(message)
+        msg["Subject"] = subject
+        msg["From"] = sender_email
+        msg["To"] = to_email
 
-        # Gmail SMTP
-        with smtplib.SMTP("smtp.gmail.com", 587, timeout=30) as smtp:
+        msg.set_content(body)
 
-            smtp.ehlo()
+        print("Connecting to Gmail SMTP...")
 
-            smtp.starttls()
+        with smtplib.SMTP("smtp.gmail.com", 587, timeout=10) as server:
 
-            smtp.ehlo()
+            server.ehlo()
 
-            smtp.login(
-                EMAIL_ADDRESS,
-                EMAIL_PASSWORD
+            server.starttls()
+
+            server.ehlo()
+
+            server.login(
+                sender_email,
+                sender_password
             )
 
-            smtp.send_message(email)
+            server.send_message(msg)
 
         print("EMAIL SENT SUCCESSFULLY")
 
+        return True
+
     except Exception as e:
 
-        print("EMAIL ERROR:", e)
+        print("SMTP ERROR:", str(e))
 
+        return False
 # ==========================================
 # Threat Level Calculator
 # ==========================================
