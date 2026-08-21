@@ -342,29 +342,29 @@ def login():
             # Send Login Success Email
             # ==========================================
 
-            if len(user) >= 4 and user[3]:
+            #if len(user) >= 4 and user[3]:
 
-                send_security_alert(
-                    user[3],
-                    "Login Success Alert",
-                    f"""
-Your account was logged in successfully.
+                #send_security_alert(
+                    #user[3],
+                    #"Login Success Alert",
+                    #f"""
+#Your account was logged in successfully.
 
-Username : {username}
+#Username : {username}
 
-IP Address : {ip}
+#IP Address : {ip}
 
-Browser : {browser}
+#Browser : {browser}
 
-Operating System : {operating_system}
+#Operating System : {operating_system}
 
-Device : {device}
+#Device : {device}
 
-Country : {country}
+#Country : {country}
 
-City : {city}
-"""
-                )
+#City : {city}
+#"""
+#                )
 
             cur.close()
             conn.close()
