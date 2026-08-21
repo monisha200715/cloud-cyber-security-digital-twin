@@ -109,7 +109,14 @@ def send_security_alert(receiver_email, subject, message):
 
         email.set_content(message)
 
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=10) as smtp:
+        # Gmail SMTP
+        with smtplib.SMTP("smtp.gmail.com", 587, timeout=30) as smtp:
+
+            smtp.ehlo()
+
+            smtp.starttls()
+
+            smtp.ehlo()
 
             smtp.login(
                 EMAIL_ADDRESS,
@@ -118,9 +125,11 @@ def send_security_alert(receiver_email, subject, message):
 
             smtp.send_message(email)
 
+        print("EMAIL SENT SUCCESSFULLY")
+
     except Exception as e:
 
-        print("EMAIL ERROR :", e)
+        print("EMAIL ERROR:", e)
 
 # ==========================================
 # Threat Level Calculator
