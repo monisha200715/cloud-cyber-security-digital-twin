@@ -100,8 +100,8 @@ def get_location(ip):
 def send_security_alert(to_email, subject, body):
 
     try:
-        sender_email = os.getenv("MAIL_EMAIL")
-        sender_password = os.getenv("MAIL_PASSWORD")
+        sender_email = os.getenv("EMAIL_ADDRESS")
+        sender_password = os.getenv("EMAIL_PASSWORD")
 
         if not sender_email or not sender_password:
             print("SMTP credentials are missing")
@@ -207,7 +207,7 @@ def login():
 
         user_input = (username + " " + password).upper()
 
-        # ==========================================
+                # ==========================================
         # SQL Injection Detection
         # ==========================================
 
@@ -250,6 +250,35 @@ def login():
 
                 conn.commit()
 
+                # Send SQL Injection Alert Email
+
+                cur.execute(
+                    "SELECT email FROM login WHERE username=%s",
+                    (username,)
+                )
+
+                email_data = cur.fetchone()
+
+                if email_data and email_data[0]:
+
+                    send_security_alert(
+                        email_data[0],
+                        "SQL Injection Attack Alert",
+                        f"""
+SQL Injection Detected
+
+Username : {username}
+
+IP Address : {ip}
+
+Country : {country}
+
+City : {city}
+
+Attack Type : SQL Injection
+"""
+                    )
+
                 cur.close()
                 conn.close()
 
@@ -257,7 +286,6 @@ def login():
                     "login.html",
                     error="SQL Injection Detected!"
                 )
-
         # ==========================================
         # Collect User Information
         # ==========================================
@@ -342,29 +370,30 @@ def login():
             # Send Login Success Email
             # ==========================================
 
-            #if len(user) >= 4 and user[3]:
+            if len(user) >= 4 and user[3]:
+                print("LOGIN SUCCESS EMAIL SENT TO:", user[3])
 
-                #send_security_alert(
-                    #user[3],
-                    #"Login Success Alert",
-                    #f"""
-#Your account was logged in successfully.
+                send_security_alert(
+                    user[3],
+                    "Login Success Alert",
+                    f"""
+Your account was logged in successfully.
 
-#Username : {username}
+Username : {username}
 
-#IP Address : {ip}
+IP Address : {ip}
 
-#Browser : {browser}
+Browser : {browser}
 
-#Operating System : {operating_system}
+Operating System : {operating_system}
 
-#Device : {device}
+Device : {device}
 
-#Country : {country}
+Country : {country}
 
-#City : {city}
-#"""
-#                )
+City : {city}
+"""
+                )
 
             cur.close()
             conn.close()
